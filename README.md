@@ -1,4 +1,4 @@
-# optiFi Subgraph with Ponder
+# Subgraph with Ponder
 
 ![Ponder Logo](./public/logo-ponder.png)
 
