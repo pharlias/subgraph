@@ -17,7 +17,7 @@ export default createConfig({
     RentRegistrar: {
       network: "pharosDevnet",
       abi: RentRegistrarABI,
-      address: "0x92c0969b14078Bc57DaEfEda63e24C22dDa35BDf",
+      address: "0x578b2807ea81C429505F1be4743Aec422758A461",
       startBlock: 17382372,
     }
   },
