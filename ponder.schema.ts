@@ -2,10 +2,10 @@ import { onchainTable } from "ponder";
 
 export const DomainRegistered = onchainTable("DomainRegistered", (t) => ({
   id: t.text().primaryKey(),
-  domain: t.text(),
+  name: t.text(),
   owner: t.text(),
+  expires: t.integer(),
   tokenId: t.integer(),
-  expiresAt: t.integer(),
   blockNumber: t.integer(),
   blockTimestamp: t.integer(),
   transactionHash: t.text(),
@@ -13,19 +13,29 @@ export const DomainRegistered = onchainTable("DomainRegistered", (t) => ({
 
 export const DomainRenewed = onchainTable("DomainRenewed", (t) => ({
   id: t.text().primaryKey(),
-  domain: t.text(),
+  name: t.text(),
   owner: t.text(),
-  tokenId: t.integer(),
-  expiresAt: t.integer(),
+  newExpiry: t.integer(),
   blockNumber: t.integer(),
   blockTimestamp: t.integer(),
   transactionHash: t.text(),
 }));
 
-export const RegistrationFeeChanged = onchainTable("RegistrationFeeChanged", (t) => ({
+export const DomainTransferred = onchainTable("DomainTransferred", (t) => ({
   id: t.text().primaryKey(),
-  oldFee: t.numeric(),
-  newFee: t.numeric(),
+  name: t.text(),
+  from: t.text(),
+  to: t.text(),
+  tokenId: t.integer(),
+  blockNumber: t.integer(),
+  blockTimestamp: t.integer(),
+  transactionHash: t.text(),
+}));
+
+export const FundsWithdrawn = onchainTable("FundsWithdrawn", (t) => ({
+  id: t.text().primaryKey(),
+  owner: t.text(),
+  amount: t.numeric(),
   blockNumber: t.integer(),
   blockTimestamp: t.integer(),
   transactionHash: t.text(),

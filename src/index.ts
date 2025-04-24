@@ -3,20 +3,16 @@ import { createHash, randomBytes } from "crypto";
 import {
   DomainRegistered,
   DomainRenewed,
-  RegistrationFeeChanged,
+  DomainTransferred,
+  FundsWithdrawn,
 } from "ponder:schema";
 
 const handleEvent = async (table: any, event: any, context: any, extraValues = {}) => {
   const randomValue = randomBytes(16).toString("hex");
   const id = createHash("sha256")
-    .update(`
-      ${event.transaction.hash}
-      -${event.block.number}
-      -${event.block.timestamp}
-      -${randomValue}
-    `.trim())
+    .update(`${event.transaction.hash}-${event.block.number}-${event.block.timestamp}-${randomValue}`.trim())
     .digest("hex");
-
+  
   await context.db.insert(table).values({
     id: id,
     blockNumber: event.block.number,
@@ -26,31 +22,35 @@ const handleEvent = async (table: any, event: any, context: any, extraValues = {
   });
 };
 
-// Listen for DomainRegistered events
-ponder.on("DomainNameNFT:DomainRegistered", async ({ event, context }) => {
+ponder.on("RentRegistrar:DomainRegistered", async ({ event, context }) => {
   await handleEvent(DomainRegistered, event, context, {
-    domain: event.args.domain,
+    name: event.args.name,
     owner: event.args.owner,
+    expires: event.args.expires,
     tokenId: event.args.tokenId,
-    expiresAt: event.args.expiresAt,
   });
 });
 
-
-// Listen for DomainRenewed events
-ponder.on("DomainNameNFT:DomainRenewed", async ({ event, context }) => {
+ponder.on("RentRegistrar:DomainRenewed", async ({ event, context }) => {
   await handleEvent(DomainRenewed, event, context, {
-    domain: event.args.domain,
+    name: event.args.name,
     owner: event.args.owner,
-    tokenId: Number(event.args.tokenId),
-    expiresAt: Number(event.args.expiresAt),
+    newExpiry: event.args.newExpiry,
   });
 });
 
-// Listen for RegistrationFeeChanged events
-ponder.on("DomainNameNFT:RegistrationFeeChanged", async ({ event, context }) => {
-  await handleEvent(RegistrationFeeChanged, event, context, {
-    oldFee: event.args.oldFee.toString(),
-    newFee: event.args.newFee.toString(),
+ponder.on("RentRegistrar:DomainTransferred", async ({ event, context }) => {
+  await handleEvent(DomainTransferred, event, context, {
+    name: event.args.name,
+    from: event.args.from,
+    to: event.args.to,
+    tokenId: event.args.tokenId,
+  });
+});
+
+ponder.on("RentRegistrar:FundsWithdrawn", async ({ event, context }) => {
+  await handleEvent(FundsWithdrawn, event, context, {
+    owner: event.args.owner,
+    amount: event.args.amount.toString(),
   });
 });

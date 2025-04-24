@@ -1,6 +1,6 @@
 import { createConfig } from "ponder";
 import { http } from "viem";
-import { DomainNameNFTABI } from "./abis/DomainNameNFTABI";
+import { RentRegistrarABI } from "./abis/RentRegistrarABI";
 
 export default createConfig({
   database: {
@@ -14,10 +14,10 @@ export default createConfig({
     },
   },
   contracts: {
-    DomainNameNFT: {
+    RentRegistrar: {
       network: "pharosDevnet",
-      abi: DomainNameNFTABI,
-      address: "0xeBf7d1872966FE6254caa8154b56bE4701BC3BA8",
+      abi: RentRegistrarABI,
+      address: "0x92c0969b14078Bc57DaEfEda63e24C22dDa35BDf",
       startBlock: 17382372,
     }
   },

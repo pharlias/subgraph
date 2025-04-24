@@ -3,12 +3,12 @@
 ![Ponder Logo](./public/logo-ponder.png)
 
 ## 🚀 Overview
-This project is a **Ponder Event Listener** setup that listens to on-chain events from various smart contracts on the **Pharos Devnet**. It records events like **DomainRegistered, DomainRenewed, and RegistrationFeeChanged** into a structured database.
+This project is a **Ponder Event Listener** setup that listens to on-chain events from various smart contracts on the **Pharos Devnet**. It records events like **DomainRegistered, DomainRenewed, DomainTransferred, and FundsWithdrawn** into a structured database.
 
 ## 📌 Features
 - Listens to multiple smart contracts.
 - Stores events efficiently using a single **handleEvent** function.
-- Supports **DomainRegistered, DomainRenewed, and RegistrationFeeChanged**.
+- Supports **DomainRegistered, DomainRenewed, DomainTransferred, and FundsWithdrawn**.
 - Uses **Ponder** for indexing and event tracking.
 
 ## 📂 Project Structure
@@ -41,7 +41,8 @@ pnpm dev
 ### Pharlias Contract
 - `DomainRegistered`
 - `DomainRenewed`
-- `RegistrationFeeChanged`
+- `DomainTransferred`
+- `FundsWithdrawn`
 
 ## ⚡ Configuration
 Modify the **ponder.config.ts** file to add/remove contracts or update network settings.
