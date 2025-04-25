@@ -3,10 +3,10 @@ import { http } from "viem";
 import { RentRegistrarABI } from "./abis/RentRegistrarABI";
 
 export default createConfig({
-  database: {
-    kind: "postgres",
-    connectionString: process.env.PONDER_DATABASE_URL,
-  },
+  // database: {
+  //   kind: "postgres",
+  //   connectionString: process.env.PONDER_DATABASE_URL,
+  // },
   networks: {
     pharosDevnet: {
       chainId: 50002,
