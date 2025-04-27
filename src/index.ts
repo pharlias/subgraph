@@ -9,7 +9,6 @@ import {
 } from "ponder:schema";
 
 type Status = "registered" | "updated";
-
 const domains = new Map();
 
 const handleEvent = async (table: any, event: any, context: any, extraValues = {}) => {
@@ -17,7 +16,6 @@ const handleEvent = async (table: any, event: any, context: any, extraValues = {
   const id = createHash("sha256")
     .update(`${event.transaction.hash}-${event.block.number}-${event.block.timestamp}-${randomValue}`.trim())
     .digest("hex");
-  
   await context.db.insert(table).values({
     id: id,
     blockNumber: event.block.number,
@@ -28,36 +26,48 @@ const handleEvent = async (table: any, event: any, context: any, extraValues = {
 };
 
 const updateDomainState = async (event: any, context: any, isTransfer = false) => {
-  const { name, tokenId } = event.args;
-  const domainKey = `${name}`;
-  
+  const domainKey = isTransfer ? `${event.args.name}` : `${event.args.name}`;
   let domain = domains.get(domainKey);
-  
-  if (isTransfer) {
-    if (domain) {
-      domain.owner = event.args.to;
-      domain.status = "updated";
+
+  if (domain) {
+    if (isTransfer) {
+      domain = {
+        ...domain,
+        owner: event.args.to,
+        status: "updated"
+      };
     } else {
       domain = {
-        name: name,
+        ...domain,
+        status: "updated"
+      };
+
+      if (event.args.owner !== undefined) domain.owner = event.args.owner;
+      if (event.args.expires !== undefined) domain.expires = event.args.expires;
+      if (event.args.tokenId !== undefined) domain.tokenId = event.args.tokenId;
+    }
+  } else {
+    if (isTransfer) {
+      domain = {
+        name: event.args.name,
         owner: event.args.to,
-        tokenId: tokenId,
-        expires: 0, 
+        tokenId: event.args.tokenId || 0,
+        expires: 0,
+        status: "updated"
+      };
+    } else {
+      domain = {
+        name: event.args.name,
+        owner: event.args.owner || "",
+        tokenId: event.args.tokenId || 0,
+        expires: event.args.expires || 0,
         status: "updated"
       };
     }
-  } else {
-    domain = {
-      name: event.args.name,
-      owner: event.args.owner,
-      tokenId: event.args.tokenId,
-      expires: event.args.expires,
-      status: "updated"
-    };
   }
-  
+
   domains.set(domainKey, domain);
-  
+
   await handleEvent(DomainUpdated, event, context, {
     name: domain.name,
     owner: domain.owner,
@@ -74,14 +84,23 @@ ponder.on("RentRegistrar:DomainRegistered", async ({ event, context }) => {
     expires: event.args.expires,
     tokenId: event.args.tokenId,
   });
-  
+
   const domainKey = `${event.args.name}`;
-  domains.set(domainKey, {
+  const domain = {
     name: event.args.name,
     owner: event.args.owner,
     expires: event.args.expires,
     tokenId: event.args.tokenId,
     status: "registered"
+  };
+  domains.set(domainKey, domain);
+
+  await handleEvent(DomainUpdated, event, context, {
+    name: domain.name,
+    owner: domain.owner,
+    expires: domain.expires,
+    tokenId: domain.tokenId,
+    status: "registered" as Status,
   });
 });
 
@@ -91,13 +110,12 @@ ponder.on("RentRegistrar:DomainRenewed", async ({ event, context }) => {
     owner: event.args.owner,
     newExpiry: event.args.newExpiry,
   });
-  
+
   const domainKey = `${event.args.name}`;
   if (domains.has(domainKey)) {
     const domain = domains.get(domainKey);
     domain.expires = event.args.newExpiry;
     domains.set(domainKey, domain);
-    
     await updateDomainState(event, context);
   }
 });
@@ -109,7 +127,7 @@ ponder.on("RentRegistrar:DomainTransferred", async ({ event, context }) => {
     to: event.args.to,
     tokenId: event.args.tokenId,
   });
-  
+
   await updateDomainState(event, context, true);
 });
 
