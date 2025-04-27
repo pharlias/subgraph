@@ -78,12 +78,55 @@ export const RentRegistrarABI = [
   },
   {
     "type": "function",
+    "name": "getNode",
+    "inputs": [
+      {
+        "name": "name",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "isAvailable",
     "inputs": [
       {
         "name": "name",
         "type": "string",
         "internalType": "string"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "isDomainOwner",
+    "inputs": [
+      {
+        "name": "name",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "owner",
+        "type": "address",
+        "internalType": "address"
       }
     ],
     "outputs": [
@@ -239,6 +282,19 @@ export const RentRegistrarABI = [
   },
   {
     "type": "function",
+    "name": "updateYearlyRent",
+    "inputs": [
+      {
+        "name": "newYearlyRent",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "withdraw",
     "inputs": [],
     "outputs": [],
@@ -264,13 +320,13 @@ export const RentRegistrarABI = [
       {
         "name": "name",
         "type": "string",
-        "indexed": false,
+        "indexed": true,
         "internalType": "string"
       },
       {
         "name": "owner",
         "type": "address",
-        "indexed": false,
+        "indexed": true,
         "internalType": "address"
       },
       {
@@ -295,13 +351,13 @@ export const RentRegistrarABI = [
       {
         "name": "name",
         "type": "string",
-        "indexed": false,
+        "indexed": true,
         "internalType": "string"
       },
       {
         "name": "owner",
         "type": "address",
-        "indexed": false,
+        "indexed": true,
         "internalType": "address"
       },
       {
@@ -320,19 +376,19 @@ export const RentRegistrarABI = [
       {
         "name": "name",
         "type": "string",
-        "indexed": false,
+        "indexed": true,
         "internalType": "string"
       },
       {
         "name": "from",
         "type": "address",
-        "indexed": false,
+        "indexed": true,
         "internalType": "address"
       },
       {
         "name": "to",
         "type": "address",
-        "indexed": false,
+        "indexed": true,
         "internalType": "address"
       },
       {
@@ -346,12 +402,31 @@ export const RentRegistrarABI = [
   },
   {
     "type": "event",
+    "name": "ENSRecordUpdated",
+    "inputs": [
+      {
+        "name": "node",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "owner",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "FundsWithdrawn",
     "inputs": [
       {
         "name": "owner",
         "type": "address",
-        "indexed": false,
+        "indexed": true,
         "internalType": "address"
       },
       {
@@ -384,139 +459,6 @@ export const RentRegistrarABI = [
   },
   {
     "type": "error",
-    "name": "DomainExpired",
-    "inputs": [
-      {
-        "name": "name",
-        "type": "string",
-        "internalType": "string"
-      },
-      {
-        "name": "expiry",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "DomainNotAvailable",
-    "inputs": [
-      {
-        "name": "name",
-        "type": "string",
-        "internalType": "string"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "DomainNotRegistered",
-    "inputs": [
-      {
-        "name": "name",
-        "type": "string",
-        "internalType": "string"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "InsufficientDuration",
-    "inputs": [
-      {
-        "name": "provided",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "minimum",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "InsufficientPayment",
-    "inputs": [
-      {
-        "name": "required",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "provided",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "InvalidNFTRegistrarAddress",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "InvalidRegistryAddress",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "InvalidRootNode",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "NFTBurnFailed",
-    "inputs": [
-      {
-        "name": "tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "NFTMintFailed",
-    "inputs": [
-      {
-        "name": "tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "NoFundsToWithdraw",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "NotDomainOwner",
-    "inputs": [
-      {
-        "name": "name",
-        "type": "string",
-        "internalType": "string"
-      },
-      {
-        "name": "caller",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "owner",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "OwnableInvalidOwner",
     "inputs": [
       {
@@ -539,7 +481,172 @@ export const RentRegistrarABI = [
   },
   {
     "type": "error",
-    "name": "TransferFailed",
+    "name": "RentRegistrar__DomainExpired",
+    "inputs": [
+      {
+        "name": "name",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "expiry",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__DomainNotAvailable",
+    "inputs": [
+      {
+        "name": "name",
+        "type": "string",
+        "internalType": "string"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__DomainNotRegistered",
+    "inputs": [
+      {
+        "name": "name",
+        "type": "string",
+        "internalType": "string"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__ENSUpdateFailed",
+    "inputs": [
+      {
+        "name": "node",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__InsufficientDuration",
+    "inputs": [
+      {
+        "name": "provided",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "minimum",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__InsufficientPayment",
+    "inputs": [
+      {
+        "name": "required",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "provided",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__InvalidENSNode",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__InvalidNFTRegistrarAddress",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__InvalidNewOwner",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__InvalidRegistryAddress",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__InvalidRootNode",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__NFTBurnFailed",
+    "inputs": [
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__NFTMintFailed",
+    "inputs": [
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__NFTTransferFailed",
+    "inputs": [
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__NoFundsToWithdraw",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__NotDomainOwner",
+    "inputs": [
+      {
+        "name": "name",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "owner",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RentRegistrar__TransferFailed",
     "inputs": []
   }
 ] as const;

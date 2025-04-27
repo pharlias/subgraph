@@ -40,3 +40,15 @@ export const FundsWithdrawn = onchainTable("FundsWithdrawn", (t) => ({
   blockTimestamp: t.integer(),
   transactionHash: t.text(),
 }));
+
+export const DomainUpdated = onchainTable("DomainUpdated", (t) => ({
+  id: t.text().primaryKey(),
+  name: t.text(),
+  owner: t.text(),
+  expires: t.integer(),
+  tokenId: t.text(),
+  blockNumber: t.integer(),
+  blockTimestamp: t.integer(),
+  transactionHash: t.text(),
+  status: t.text(),
+}));
