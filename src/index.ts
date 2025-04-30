@@ -5,7 +5,8 @@ import {
   DomainRenewed,
   DomainTransferred,
   FundsWithdrawn,
-  DomainUpdated
+  DomainUpdated,
+  ETHTransferToPNS
 } from "ponder:schema";
 
 type Status = "registered" | "updated";
@@ -178,6 +179,19 @@ ponder.on("RentRegistrar:FundsWithdrawn", async ({ event, context }) => {
     });
   } catch (error) {
     console.error("Error in FundsWithdrawn handler:", error);
+    throw error;
+  }
+});
+
+ponder.on("PNSPaymentRouter:ETHTransferToPNS", async ({ event, context }) => {
+  try {
+    await handleEvent(ETHTransferToPNS, event, context, {
+      sender: event.args.sender,
+      name: event.args.name,
+      amount: event.args.amount.toString(),
+    });
+  } catch (error) {
+    console.error("Error in ETHTransferToPNS handler:", error);
     throw error;
   }
 });

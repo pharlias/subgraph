@@ -2,7 +2,7 @@ export const RentRegistrarABI = [
   {
     "inputs": [
       {
-        "internalType": "contract ENSRegistry",
+        "internalType": "contract PNSRegistry",
         "name": "_ens",
         "type": "address"
       },
@@ -19,6 +19,22 @@ export const RentRegistrarABI = [
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "length",
+        "type": "uint256"
+      }
+    ],
+    "name": "NameMustBeAtLeastThreeCharacter",
+    "type": "error"
   },
   {
     "inputs": [
@@ -136,6 +152,11 @@ export const RentRegistrarABI = [
   {
     "inputs": [],
     "name": "RentRegistrar__InvalidNewOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "RentRegistrar__InvalidPriceAmount",
     "type": "error"
   },
   {
@@ -357,6 +378,19 @@ export const RentRegistrarABI = [
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "updater",
+        "type": "address"
+      }
+    ],
+    "name": "RentPricesUpdated",
+    "type": "event"
+  },
+  {
     "inputs": [
       {
         "internalType": "string",
@@ -404,7 +438,7 @@ export const RentRegistrarABI = [
     "name": "ens",
     "outputs": [
       {
-        "internalType": "contract ENSRegistry",
+        "internalType": "contract PNSRegistry",
         "name": "",
         "type": "address"
       }
@@ -501,6 +535,58 @@ export const RentRegistrarABI = [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "priceForFourToFiveChar",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "priceForSixToNineChar",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "priceForTenPlusChar",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "priceForThreeChar",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "string",
@@ -559,6 +645,11 @@ export const RentRegistrarABI = [
         "internalType": "uint256",
         "name": "numYears",
         "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
       }
     ],
     "name": "rentPrice",
@@ -620,11 +711,26 @@ export const RentRegistrarABI = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "newYearlyRent",
+        "name": "_priceForThreeChar",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_priceForFourToFiveChar",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_priceForSixToNineChar",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_priceForTenPlusChar",
         "type": "uint256"
       }
     ],
-    "name": "updateYearlyRent",
+    "name": "updateRentPrice",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -634,19 +740,6 @@ export const RentRegistrarABI = [
     "name": "withdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "yearlyRent",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   }
 ] as const;

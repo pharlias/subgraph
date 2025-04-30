@@ -52,3 +52,13 @@ export const DomainUpdated = onchainTable("DomainUpdated", (t) => ({
   transactionHash: t.text(),
   status: t.text(),
 }));
+
+export const ETHTransferToPNS = onchainTable("ETHTransferToPNS", (t) => ({
+  id: t.text().primaryKey(),
+  name: t.text(),
+  sender: t.text(),
+  amount: t.numeric(),
+  blockNumber: t.integer(),
+  blockTimestamp: t.integer(),
+  transactionHash: t.text(),
+}));
