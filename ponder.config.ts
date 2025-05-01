@@ -21,20 +21,20 @@ export default createConfig({
     RentRegistrar: {
       network: "pharosDevnet",
       abi: RentRegistrarABI,
-      address: "0xfBC3e454397C8e6525D48ED2bE6A91000B97a2D9",
-      startBlock: 18656814,
+      address: "0x5921505FDF107b78A7EEA7A6CA786Fc42fEFe49f",
+      startBlock: 18807461,
     },
     PNSPaymentRouter: {
       network: "pharosDevnet",
       abi: PNSPaymentRouterABI,
-      address: "0xD8d8F5051fe75B49DF221dCB6EB0cC4c2d8b25F6",
-      startBlock: 18656814,
+      address: "0x6C9f6dA9c8716f12F86a40d62a7eABcAf63bc494",
+      startBlock: 18807535,
     },
     Pharlias: {
       network: "pharosDevnet",
       abi: PharliasABI,
-      address: "0xee81752c72c97Cb231aC51F0434900C65C536Eb0",
-      startBlock: 18656815,
+      address: "0x1B2071628e2338aD3A5724F5D0a03308Ff2dBf05",
+      startBlock: 18807077,
     }
   },
 });
